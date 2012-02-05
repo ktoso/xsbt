@@ -72,10 +72,14 @@ final class TestRunner(framework: Framework, loader: ClassLoader, listeners: Seq
 			// here we get the results! here is where we'd pass in the event listener
 			val results = new scala.collection.mutable.ListBuffer[Event]
 			val handler = new EventHandler { def handle(e:Event){ results += e } }
+
+      safeListenersCall(_.startTest( testDefinition.name ))
 			run(testDefinition, handler, args.toArray)
 			val event = TestEvent(results)
+			safeListenersCall(_.endTest( event ))
 			safeListenersCall(_.testEvent( event ))
-			event.result
+
+      event.result
 		}
 
 		safeListenersCall(_.startGroup(name))

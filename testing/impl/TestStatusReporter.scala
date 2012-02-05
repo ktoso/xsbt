@@ -14,7 +14,9 @@ private[sbt] class TestStatusReporter(path: Path, log: Logger) extends TestsList
 
 	def doInit {}
 	def startGroup(name: String) { succeeded remove name }
+  def startTest(event: TestEvent) {}
 	def testEvent(event: TestEvent) {}
+  def endTest(event: TestEvent) {}
 	def endGroup(name: String, t: Throwable) {}
 	def endGroup(name: String, result: Result.Value)
 	{

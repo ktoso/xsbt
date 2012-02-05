@@ -10,8 +10,12 @@ trait TestReportListener
 {
 	/** called for each class or equivalent grouping */
   def startGroup(name: String)
-	/** called for each test method or equivalent */
+  /** called before each test method or equivalent */
+  def startTest(testName: String)
+  /** called for each test method or equivalent */
   def testEvent(event: TestEvent)
+  /** called after each test method or equivalent */
+  def endTest(event: TestEvent)
 	/** called if there was an error during test */
   def endGroup(name: String, t: Throwable)
 	/** called if test completed */
@@ -81,7 +85,9 @@ class TestLogger(val logging: TestLogging) extends TestsListener
 	protected var skipped, errors, passed, failures = 0
 	
 	def startGroup(name: String) {}
+  def startTest(testName: String): Unit = {}
 	def testEvent(event: TestEvent): Unit = event.detail.foreach(count)
+  def endTest(event: TestEvent): Unit = event.detail.foreach(count)
 	def endGroup(name: String, t: Throwable)
 	{
 		log.trace(t)
